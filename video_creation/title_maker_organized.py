@@ -11,20 +11,20 @@ import imageio
 ######################################################################
 #robotunes   =1   my first youtube account
 #karaoke_101 =2   my second youtube account
-
-num_select= 2                               # select account of your choice
-title_line1="A Smile"
-title_line2 ="In Your"
-title_line3 ="Heart"
-singer = "Ariel Rivera"
-font_adj = 6 # this will subtract the font size
-singer_font = 8          # adjust if needed
-thickness_adj = 10   # this will subtract the thickness
-singer_thickness_adj =4 # this will subtract singer thickess
+# kantaph = 4
+num_select= 4                               # select account of your choice
+title_line1="All of A "
+title_line2 ="Sudden"
+title_line3 =""
+singer = "Matt Monro"
+font_adj = 0 # this will subtract the font size
+singer_font = 11          # adjust if needed
+thickness_adj = -4   # this will subtract the thickness
+singer_thickness_adj =0 # this will subtract singer thickess
 singer_thickness = int(singer_font*2.5)
-title_line = 100             # first line from top range 160 to 260
-l2 = 50                       # space between title1 and title2 // unit is pixel
-l3 = 110                       # space between title2 and title3 // unit is pixel
+title_line = 220             # first line from top range 160 to 260
+l2 = 100                       # space between title1 and title2 // unit is pixel
+l3 = 100                       # space between title2 and title3 // unit is pixel
 duration = 35  # Total GIF duration in seconds max 35
 ########################################################################
 len1 = len(title_line1)
@@ -39,8 +39,10 @@ bottom_line = 50            # Default offset for bottom lines
 singer_line = 100           # Default offset for singer label
 
 txt = ""
+addx = 0 # add x position
 txt_size = 2.3
-
+circle = True
+image_res = False
 if num_select == 1:
     img="img/robo_bg.png"
     txt ="RoboTunes"
@@ -50,9 +52,20 @@ elif num_select == 2:
     txt ="Karaoke_101"
     saved = "C:\\Users\\glenn\OneDrive\\Documents\\video_creation\\karaoke101_file\\"
     txt_size = 2.0
-
+elif num_select == 4:
+    img="img/nebulae_saturn.png"
+    txt ="Musike"
+    saved = "C:\\Users\\glenn\OneDrive\\Documents\\video_creation\\musike_file\\"
+    #txt_size = 2.0
+    circle = False
+    addx = 50
+    image_res = True
 frame= cv2.imread(img)
-
+# Resize the image
+if image_res:
+    new_dimensions = (2816, 1536)
+    # Interpolation cv2.INTER_LANCZOS4 is often preferred for high-quality upscaling
+    frame = cv2.resize(frame, new_dimensions, interpolation=cv2.INTER_LANCZOS4)
 screen_height, screen_width, channels = frame.shape
 hd_karaoke = "Crystal Clear KARAOKE"
 singer_label = "singer:"
@@ -133,7 +146,8 @@ y_pos_singer =  y_pos_hd-(text_height_hd+50)# Start at the bottom of the fifth s
 x_pos_label = 50  # Fixed position 50 pixels from the left
 y_pos_label = y_pos_singer - text_height_label - singer_line  # Adjust spacing above the singer's text
 # Place the first line of text
-cv2.circle(frame, (screen_width-110,screen_height-100), 50, (0,0,0), -1)
+if circle:
+    cv2.circle(frame, (screen_width-110,screen_height-100), 50, (0,0,0), -1)
 #cv2.putText(frame, title_line1, (x_pos_line1, y_pos_line1), font, font_scale, (255,255,255), thickness+10, cv2.LINE_AA)
 cv2.putText(frame, title_line1, (x_pos_line1, y_pos_line1), font, font_scale, (255,255,255), thickness+shade+10, cv2.LINE_AA)
 cv2.putText(frame, title_line1, (x_pos_line1, y_pos_line1), font, font_scale, (0,0,0), thickness+shade, cv2.LINE_AA)
@@ -149,8 +163,8 @@ cv2.putText(frame, title_line2, (x_pos_line2, y_pos_line2+l2), font, font_scale,
 cv2.putText(frame, title_line3, (x_pos_line3, y_pos_line3+l3), font, font_scale, (255,255,255), thickness+shade+10, cv2.LINE_AA)
 cv2.putText(frame, title_line3, (x_pos_line3, y_pos_line3+l3), font, font_scale, (0,0,0), thickness+shade, cv2.LINE_AA)
 cv2.putText(frame, title_line3, (x_pos_line3, y_pos_line3+l3), font, font_scale, (0,255,255), thickness, cv2.LINE_AA) #screen_height, screen_width
-cv2.putText(frame, txt, (screen_width-460,screen_height-80), font, txt_size, (255,255,255), 20, cv2.LINE_AA)
-cv2.putText(frame, txt, (screen_width-460,screen_height-80), font, txt_size, (255,0,0), 5, cv2.LINE_AA)
+cv2.putText(frame, txt, (addx+screen_width-460,screen_height-80), font, txt_size, (255,255,255), 20, cv2.LINE_AA)
+cv2.putText(frame, txt, (addx+screen_width-460,screen_height-80), font, txt_size, (255,0,0), 5, cv2.LINE_AA)
 
 if len(title_line3) > 1:
     # Place the artist text at the calculated position
