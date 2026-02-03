@@ -1,2 +1,2 @@
-CREATE  CONTENT  FROM  SCRATCH
-USING  PYTHON  PROGRAMMING  LANGUAGE
+Create  Content  From  Scratch
+Using  Python  Programming  Language
